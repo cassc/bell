@@ -1,0 +1,12 @@
+[submodule "api"]
+	path = api
+	url = ./api
+[submodule "doc"]
+	path = doc
+	url = ./doc
+[submodule "fe"]
+	path = fe
+	url = ./fe
+[submodule "python"]
+	path = python
+	url = ./python/

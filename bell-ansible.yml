@@ -1,0 +1,81 @@
+- name: push-to-firefly
+  hosts: "firefly-f"
+  gather_facts: False
+  vars:
+    home: /home/firefly
+  tasks:
+  - name: Synchronization api
+    tags:
+      - sync
+    synchronize:
+      src: ./api/src
+      dest: "{{ home }}/bell/api/src"
+  - name: Synchronization api
+    tags:
+      - sync
+    synchronize:
+      src: ./api/Cargo.toml
+      dest: "{{ home }}/bell/api/Cargo.toml"
+  - name: Synchronization fe
+    tags:
+      - sync
+    synchronize:
+      src: ./fe/resources
+      dest: "{{ home }}/bell/fe/resources"
+  - name: Synchronization python
+    tags:
+      - sync
+    synchronize:
+      src: ./python
+      dest: "{{ home }}/bell/python"
+  - name: Synchronization restart-scripts
+    tags:
+      - sync
+    synchronize:
+      src: ./restart-api.sh
+      dest: "{{ home }}/bell/restart-api.sh"
+  - name: Synchronization restart-scripts
+    tags:
+      - sync
+    synchronize:
+      src: ./restart-fe.sh
+      dest: "{{ home }}/bell/restart-fe.sh"
+
+  - name: build bell.api
+    shell:  "{{ home }}/.cargo/bin/cargo build"
+    tags:
+      - build
+    async: 1000
+    poll: 0
+    args:
+      chdir: "{{ home }}/bell/api"
+      executable:  /bin/bash
+  - name: restart bell.api
+    shell:  "{{ home }}/bell/restart-api.sh"
+    tags:
+      - run
+      - api
+    async: 2592000
+    poll: 5
+    args:
+      chdir: "{{ home }}/bell/api"
+      executable:  /bin/bash
+  - name: restart bell.fe
+    shell:  "{{ home }}/bell/restart-fe.sh"
+    tags:
+      - run
+      - fe
+    async: 2592000
+    poll: 5
+    args:
+      chdir: "{{ home }}/bell/fe"
+      executable:  /bin/bash
+  - name: install python lib
+    shell: make install
+    tags:
+      - python
+    async: 2592000
+    poll: 5
+    args:
+      chdir: "{{ home }}/python"
+      executable:  /bin/bash
