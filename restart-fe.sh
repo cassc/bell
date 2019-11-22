@@ -14,6 +14,6 @@ if ! $PID ; then
 fi
 
 
-DISPLAY=:0 electron  $HOME/bell/fe/   &
+DISPLAY=:0 nohup electron  $HOME/bell/fe/   &
 
 exit 0

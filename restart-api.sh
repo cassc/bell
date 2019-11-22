@@ -14,6 +14,6 @@ if ! $PID ; then
 fi
 
 
-cd $HOME/bell/api/ ; DEBUG_INTERVAL=2 PROGRAM_PATH=/home/firefly/bell/python/examples cargo run > api.log &
+cd $HOME/bell/api/ ; DEBUG_INTERVAL=2 PROGRAM_PATH=/home/firefly/bell/python/examples nohup cargo run &
 
 exit 0

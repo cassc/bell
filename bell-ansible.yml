@@ -4,12 +4,24 @@
   vars:
     home: /home/firefly
   tasks:
-  - name: Synchronization api
+  - name: Synchronization api source
     tags:
       - sync
     synchronize:
-      src: ./api/src
-      dest: "{{ home }}/bell/api/src"
+      src: ./api/src/
+      dest: "{{ home }}/bell/api/src/"
+      archive: yes
+      delete: yes
+      checksum: yes
+  - name: Synchronization api file
+    tags:
+      - sync
+    synchronize:
+      src: ./api/static/
+      dest: "{{ home }}/bell/api/static/"
+      archive: yes
+      delete: yes
+      checksum: yes
   - name: Synchronization api
     tags:
       - sync
@@ -20,26 +32,28 @@
     tags:
       - sync
     synchronize:
-      src: ./fe/resources
-      dest: "{{ home }}/bell/fe/resources"
+      src: ./fe/resources/
+      dest: "{{ home }}/bell/fe/resources/"
+      delete: yes
   - name: Synchronization python
     tags:
       - sync
     synchronize:
-      src: ./python
-      dest: "{{ home }}/bell/python"
-  - name: Synchronization restart-scripts
+      src: ./python/
+      dest: "{{ home }}/bell/python/"
+      delete: yes
+  - name: Synchronization restart-api
     tags:
       - sync
     synchronize:
       src: ./restart-api.sh
-      dest: "{{ home }}/bell/restart-api.sh"
-  - name: Synchronization restart-scripts
+      dest: "{{ home }}/bin/restart-api.sh"
+  - name: Synchronization restart-fe
     tags:
       - sync
     synchronize:
       src: ./restart-fe.sh
-      dest: "{{ home }}/bell/restart-fe.sh"
+      dest: "{{ home }}/bin/restart-fe.sh"
 
   - name: build bell.api
     shell:  "{{ home }}/.cargo/bin/cargo build"
@@ -51,7 +65,7 @@
       chdir: "{{ home }}/bell/api"
       executable:  /bin/bash
   - name: restart bell.api
-    shell:  "{{ home }}/bell/restart-api.sh"
+    shell:  "{{ home }}/bin/restart-api.sh"
     tags:
       - run
       - api
@@ -61,7 +75,7 @@
       chdir: "{{ home }}/bell/api"
       executable:  /bin/bash
   - name: restart bell.fe
-    shell:  "{{ home }}/bell/restart-fe.sh"
+    shell:  "{{ home }}/bin/restart-fe.sh"
     tags:
       - run
       - fe
