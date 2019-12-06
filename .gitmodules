@@ -10,3 +10,6 @@
 [submodule "python"]
 	path = python
 	url = ./python/
+[submodule "clib"]
+	path = clib
+	url = ./clib/
