@@ -1,0 +1,5 @@
+{
+    "main": "motor.py",
+    "title": "motor",
+    "res": ["event.py"]
+}

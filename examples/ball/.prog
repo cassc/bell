@@ -1,0 +1,5 @@
+{
+    "main": "ball.py",
+    "title": "ball",
+    "res": ["music.mp3", "anim.gif"]
+}
